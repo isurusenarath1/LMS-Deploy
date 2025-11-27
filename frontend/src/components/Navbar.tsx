@@ -47,14 +47,9 @@ export default function Navbar() {
     try {
       const batchSvc = await import('../services/batchService');
       const res = await batchSvc.getBatches();
-      // normalize response shape and only include Active batches
-      let items: any[] = []
-      if (Array.isArray(res)) items = res
-      else if (res && Array.isArray(res.batches)) items = res.batches
-      else if (res && Array.isArray(res.data)) items = res.data
-      // filter only active
-      items = items.filter((b: any) => (b?.status || 'Active') === 'Active')
-      setBatchesList(items.slice(0, 6))
+      if (Array.isArray(res)) {
+        setBatchesList(res.slice(0, 6));
+      }
     } catch (err) {
       console.error('Load batches dropdown error', err);
     }

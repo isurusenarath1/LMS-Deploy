@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { PlusIcon, FileTextIcon, DownloadIcon, TrashIcon, FolderIcon, UploadIcon } from 'lucide-react';
 import materialService from '../../services/materialService';
 import { toast } from 'sonner';
-import { API_BASE } from '../../config';
 
 export default function AdminMaterials() {
   const [materials, setMaterials] = useState<any[]>([]);
@@ -25,7 +24,7 @@ export default function AdminMaterials() {
   const [editMonth, setEditMonth] = useState('');
   const [editDescription, setEditDescription] = useState('');
 
-  
+  const API_BASE = (import.meta as any).env.VITE_API_URL || 'http://localhost:5000/api';
 
   const loadMaterials = async () => {
     setLoading(true);

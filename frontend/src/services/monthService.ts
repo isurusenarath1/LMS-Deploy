@@ -1,6 +1,6 @@
 ﻿import { authService } from './authService'
 
-import { API_BASE } from '../config'
+const API_BASE = (import.meta as any).env.VITE_API_URL || 'http://localhost:5000/api'
 
 function getHeaders(auth = true) {
   const token = authService.getToken()

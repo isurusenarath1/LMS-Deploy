@@ -24,7 +24,6 @@ export default function AdminClasses() {
   const [form, setForm] = useState<Partial<Batch>>({ year: '' })
   const [monthsOpenFor, setMonthsOpenFor] = useState<Batch | null>(null)
   const [months, setMonths] = useState<any[]>([])
-  const [togglingIds, setTogglingIds] = useState<string[]>([])
   const [monthModalOpen, setMonthModalOpen] = useState(false)
   const [monthForm, setMonthForm] = useState<any>({ name: '', title: '', description: '' })
   const [editingMonth, setEditingMonth] = useState<any | null>(null)
@@ -122,25 +121,6 @@ export default function AdminClasses() {
     }
   }
 
-  async function handleToggleStatus(b: Batch) {
-    if (!b || !b._id) return
-    const id = b._id
-    setTogglingIds((s) => [...s, id])
-    try {
-      const svc = await import('../../services/batchService')
-      const newStatus = (b.status || 'Active') === 'Active' ? 'Inactive' : 'Active'
-      await svc.updateBatch(id, { status: newStatus })
-      toast.success('Batch status updated')
-      window.dispatchEvent(new CustomEvent('batches-updated'))
-      load()
-    } catch (err: any) {
-      console.error(err)
-      toast.error(err?.message || 'Failed to update status')
-    } finally {
-      setTogglingIds((s) => s.filter((x) => x !== id))
-    }
-  }
-
   return (
     <div>
       {/* Tab Navigation */}
@@ -220,14 +200,6 @@ export default function AdminClasses() {
                               <EditIcon className="w-4 h-4" />
                             </button>
                             <button onClick={() => openManageMonths(b)} className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition" title="Manage Months">M</button>
-                            <button
-                              onClick={() => handleToggleStatus(b)}
-                              className={`px-3 py-1 rounded-lg text-sm font-medium transition ${((b.status || 'Active') === 'Active') ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200' : 'bg-green-100 text-green-800 hover:bg-green-200'}`}
-                              title={(b.status || 'Active') === 'Active' ? 'Deactivate' : 'Activate'}
-                              disabled={togglingIds.includes(b._id || '')}
-                            >
-                              {togglingIds.includes(b._id || '') ? '...' : ((b.status || 'Active') === 'Active' ? 'Deactivate' : 'Activate')}
-                            </button>
                             <button onClick={() => handleDelete(b._id)} className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition" title="Delete">
                               <TrashIcon className="w-4 h-4" />
                             </button>
