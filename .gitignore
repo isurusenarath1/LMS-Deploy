@@ -1,0 +1,28 @@
+# Node.js
+node_modules/
+.env
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp
+.pnp.js
+
+# React build output
+build/
+dist/
+
+# IDE-specific files
+.idea/
+.vscode/
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# MongoDB specific
+data/db/
+dump/
+
+# Other temporary files
+*.log
+*.tmp
