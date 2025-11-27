@@ -24,7 +24,7 @@ export default function AdminMaterials() {
   const [editMonth, setEditMonth] = useState('');
   const [editDescription, setEditDescription] = useState('');
 
-  const API_BASE = (import.meta as any).env.VITE_API_URL || 'http://localhost:5000/api';
+  const API_BASE = (import.meta as any).env.VITE_API_URL || 'https://lms-deploy-backend.vercel.app/api';
 
   const loadMaterials = async () => {
     setLoading(true);

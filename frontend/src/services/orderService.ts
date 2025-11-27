@@ -1,6 +1,6 @@
 import { authService } from './authService';
 
-const API_BASE = (import.meta as any).env.VITE_API_URL || 'http://localhost:5000/api';
+const API_BASE = (import.meta as any).env.VITE_API_URL || 'https://lms-deploy-backend.vercel.app/api';
 
 function getHeaders(hasJson = true) {
   const token = authService.getToken();

@@ -1,6 +1,6 @@
 ﻿import { authService } from './authService';
 
-const API_BASE = (import.meta as any).env.VITE_API_URL || 'http://localhost:5000/api';
+const API_BASE = (import.meta as any).env.VITE_API_URL || 'https://lms-deploy-backend.vercel.app/api';
 
 export interface StudentPayload {
   name: string;
