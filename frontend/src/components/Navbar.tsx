@@ -22,6 +22,9 @@ export default function Navbar() {
   
   const [coursesList, setCoursesList] = useState<any[]>([]);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showMobileBatches, setShowMobileBatches] = useState(false);
+  const [showMobileCart, setShowMobileCart] = useState(false);
+  const [showMobileNotifications, setShowMobileNotifications] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showCartMenu, setShowCartMenu] = useState(false);
   const cart = useCart();
@@ -47,9 +50,14 @@ export default function Navbar() {
     try {
       const batchSvc = await import('../services/batchService');
       const res = await batchSvc.getBatches();
-      if (Array.isArray(res)) {
-        setBatchesList(res.slice(0, 6));
-      }
+      // normalize response shape and only include Active batches
+      let items: any[] = []
+      if (Array.isArray(res)) items = res
+      else if (res && Array.isArray(res.batches)) items = res.batches
+      else if (res && Array.isArray(res.data)) items = res.data
+      // filter only active
+      items = items.filter((b: any) => (b?.status || 'Active') === 'Active')
+      setBatchesList(items.slice(0, 6))
     } catch (err) {
       console.error('Load batches dropdown error', err);
     }
@@ -334,10 +342,80 @@ export default function Navbar() {
               </AnimatePresence>
             </div>
           </div>
-          {/* Mobile Menu Button */}
-          <button onClick={() => setShowMobileMenu(!showMobileMenu)} className="md:hidden text-gray-700">
-            {showMobileMenu ? <XIcon className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
-          </button>
+          {/* Mobile icons + Menu Button */}
+          <div className="flex items-center gap-3 md:hidden">
+            {/* Mobile Cart icon (preview outside menu) */}
+            <div className="relative">
+              <button onClick={() => setShowCartMenu(prev => !prev)} className="relative text-gray-700">
+                <ShoppingCartIcon className="w-6 h-6" />
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">{cart.count}</span>
+              </button>
+              <AnimatePresence>
+                {showCartMenu && <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} className="absolute right-0 top-full mt-2 w-72 bg-white rounded-lg shadow-lg py-3 border border-gray-100">
+                    <div className="px-4 py-2 border-b border-gray-100">
+                      <h3 className="font-semibold text-gray-800">Cart</h3>
+                    </div>
+                    <div className="max-h-60 overflow-y-auto">
+                      {cart.items.length === 0 ? (
+                        <div className="px-4 py-3 text-sm text-gray-500">Cart is empty</div>
+                      ) : (
+                        cart.items.map(item => (
+                          <div key={item.monthId} className="flex items-center justify-between px-4 py-3 border-b border-gray-50">
+                            <div>
+                              <div className="font-medium text-gray-800">{item.name}</div>
+                              <div className="text-xs text-gray-500">{item.batchYear}</div>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <div className="text-sm font-semibold text-gray-900">{item.price ? `LKR ${item.price}` : 'Free'}</div>
+                              <IconButton onClick={() => { cart.removeItem(item.monthId); toast.success('Removed from cart'); }} size="small" aria-label="remove from cart" title="Remove from cart">
+                                <DeleteIcon fontSize="small" className="text-red-600" />
+                              </IconButton>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                    <div className="px-4 py-3 border-t border-gray-100">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="text-sm text-gray-600">Total</div>
+                        <div className="font-semibold">LKR {cart.total}</div>
+                      </div>
+                      <div className="flex gap-2">
+                        <button onClick={() => { cart.clear(); setShowCartMenu(false); }} className="flex-1 px-3 py-2 border rounded text-sm">Clear</button>
+                        <button onClick={() => { setShowCartMenu(false); window.location.href = '/checkout'; }} className="flex-1 px-3 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded text-sm">Checkout</button>
+                      </div>
+                    </div>
+                  </motion.div>}
+              </AnimatePresence>
+            </div>
+
+            {/* Mobile Notifications icon (preview outside menu) */}
+            <div className="relative">
+              <button onClick={() => setShowNotifications(!showNotifications)} className="relative text-gray-700">
+                <BellIcon className="w-6 h-6" />
+                {unreadCount > 0 && <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">{unreadCount}</span>}
+              </button>
+              <AnimatePresence>
+                {showNotifications && <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="absolute right-0 top-full mt-2 w-72 bg-white rounded-lg shadow-lg py-2 border border-gray-100 max-h-96 overflow-y-auto">
+                    <div className="px-4 py-3 border-b border-gray-100">
+                      <h3 className="font-semibold text-gray-800">Notifications</h3>
+                    </div>
+                    {notifications.map((notification: any) => <div key={notification._id || notification.id} onClick={() => handleOpenNotification(notification)} className={`px-4 py-3 hover:bg-gray-50 cursor-pointer ${!notification.isRead ? 'bg-blue-50' : ''}`}>
+                        <p className="font-medium text-gray-800 text-sm">{notification.title}</p>
+                        <p className="text-xs text-gray-600 mt-1">{notification.message}</p>
+                        <p className="text-xs text-gray-400 mt-1">{notification.createdAt ? new Date(notification.createdAt).toLocaleString() : ''}</p>
+                      </div>)}
+                    <div className="px-4 py-3 border-t border-gray-100">
+                      <Link to="/dashboard/notifications" className="text-sm text-blue-600 hover:text-blue-800" onClick={() => setShowNotifications(false)}>View all notifications</Link>
+                    </div>
+                  </motion.div>}
+              </AnimatePresence>
+            </div>
+
+            <button onClick={() => setShowMobileMenu(!showMobileMenu)} className="text-gray-700">
+              {showMobileMenu ? <XIcon className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
         {/* Mobile Menu */}
         <AnimatePresence>
@@ -354,7 +432,31 @@ export default function Navbar() {
               <Link to="/" className="block py-2 text-gray-700 hover:text-blue-600">
                 Home
               </Link>
-              {/* Classes link removed from mobile menu */}
+              {/* Mobile Batches accordion */}
+              <div>
+                <button onClick={async () => {
+                  await loadBatchesDropdown();
+                  setShowMobileBatches(prev => !prev);
+                }} className="flex items-center justify-between w-full py-2 text-gray-700 hover:text-blue-600">
+                  <div className="flex items-center gap-2"><BookOpenIcon className="w-5 h-5" /><span>Batches</span></div>
+                  <ChevronDownIcon className={`w-4 h-4 transform ${showMobileBatches ? 'rotate-180' : ''}`} />
+                </button>
+                {showMobileBatches && <div className="pl-6">
+                    {batchesList && batchesList.length > 0 ? batchesList.map(b => <Link key={b._id} to={`/batch/${b.year}/months`} className="block py-2 text-gray-700 hover:text-blue-600" onClick={() => {
+                        setShowMobileMenu(false);
+                        setShowMobileBatches(false);
+                      }}>
+                        <div className="text-sm font-medium">{b.year} Batch</div>
+                        <div className="text-xs text-gray-400">{b.title || ''}</div>
+                      </Link>) : <div className="py-2 text-sm text-gray-500">No batches yet</div>}
+                  </div>}
+              </div>
+
+              
+
+              
+
+              {/* Other links */}
               <Link to="/dashboard" className="block py-2 text-gray-700 hover:text-blue-600">
                 Dashboard
               </Link>
