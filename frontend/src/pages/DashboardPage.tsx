@@ -15,9 +15,9 @@ import MyOrders from '../components/dashboard/MyOrders';
 export default function DashboardPage() {
   return <div className="min-h-screen w-full bg-gray-50">
       <Navbar />
-      <div className="flex">
+      <div className="flex flex-col md:flex-row">
         <DashboardSidebar />
-        <main className="flex-1 p-8">
+        <main className="flex-1 p-4 md:p-8">
           <Routes>
             <Route path="/" element={<DashboardOverview />} />
             <Route path="/classes" element={<MyClasses />} />
