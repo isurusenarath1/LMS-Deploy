@@ -5,7 +5,7 @@ import logo from '../assets/ppplogo';
 export default function Footer() {
   return <footer className="bg-gray-900 text-gray-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="hidden sm:grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* About Section */}
           <div>
             <div className="flex items-center space-x-2 mb-4">
@@ -106,10 +106,10 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-        <div className="border-t border-gray-800 mt-8 pt-8 text-sm">
-          <div className="flex flex-col sm:flex-row items-center sm:items-center sm:justify-between max-w-2xl mx-auto gap-2">
-            <div className="text-left">&copy; {new Date().getFullYear()} PPP Physics. All rights reserved.</div>
-            <div className="text-right">Developed by IsuruSenarath.</div>
+        <div className="border-t border-gray-800 mt-6 pt-4 text-sm">
+          <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-between max-w-2xl mx-auto gap-1 px-4">
+            <div className="w-full sm:w-auto text-center sm:text-left">&copy; {new Date().getFullYear()} PPP Physics. All rights reserved.</div>
+            <div className="w-full sm:w-auto text-center sm:text-right">Developed by IsuruSenarath.</div>
           </div>
         </div>
       </div>
