@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { UsersIcon, BookOpenIcon, ShoppingCartIcon, CreditCardIcon, BellIcon, QrCodeIcon, SettingsIcon, LogOutIcon, X as XIcon } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { motion } from 'framer-motion';
 
 interface Props {
   open: boolean;
@@ -51,12 +52,26 @@ export default function MobileAdminSidebar({ open, onClose }: Props) {
     navigate('/login');
   };
 
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKey);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [open, onClose]);
+
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex">
+    <div className="fixed inset-0 z-50 flex" role="dialog" aria-modal="true">
       <div onClick={onClose} className="fixed inset-0 bg-black/40 backdrop-blur-sm" />
-      <div className="relative w-72 bg-white h-full shadow-xl">
+      <motion.div initial={{ x: -320 }} animate={{ x: 0 }} exit={{ x: -320 }} transition={{ type: 'tween' }} className="relative w-72 bg-white h-full shadow-xl">
         <div className="p-4 flex items-center justify-between border-b">
           <h3 className="text-lg font-semibold">Admin Panel</h3>
           <button onClick={onClose} aria-label="Close" className="p-2 rounded hover:bg-gray-100">
@@ -81,7 +96,7 @@ export default function MobileAdminSidebar({ open, onClose }: Props) {
             <span className="font-medium">Logout</span>
           </button>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

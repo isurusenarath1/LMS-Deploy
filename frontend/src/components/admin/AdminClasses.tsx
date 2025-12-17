@@ -155,8 +155,8 @@ export default function AdminClasses() {
               <h1 className="text-3xl font-bold text-gray-900 mb-2">Manage Batches</h1>
               <p className="text-gray-600">Create and manage year batches (e.g., 2026, 2027)</p>
             </div>
-            <button onClick={openNew} className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition">
-              <PlusIcon className="w-5 h-5" />
+            <button onClick={openNew} className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-2 md:px-6 md:py-3 rounded-lg font-semibold text-sm md:text-base hover:shadow-lg transition">
+              <PlusIcon className="w-4 h-4 md:w-5 md:h-5" />
               <span>New Batch</span>
             </button>
           </div>
@@ -164,14 +164,14 @@ export default function AdminClasses() {
           {loading && <div className="mb-4 text-sm text-gray-600">Loading batches...</div>}
 
           <div className="bg-white rounded-xl shadow-md overflow-hidden">
-            <div className="overflow-x-auto">
+            <div className="hidden md:block overflow-x-auto">
               <table className="w-full">
                 <thead className="bg-gray-50 border-b border-gray-200">
                   <tr>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Year</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Title</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Status</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Actions</th>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Year</th>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Title</th>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Status</th>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -182,26 +182,26 @@ export default function AdminClasses() {
                   ) : (
                     batches.map((b, index) => (
                       <motion.tr key={b._id || index} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.03 }} className="hover:bg-gray-50">
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-3">
                           <div className="font-medium text-gray-900">{b.year}</div>
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-3">
                           <div className="text-gray-700">{b.title || '-'}</div>
                         </td>
-                        <td className="px-6 py-4">
-                          <span className={`px-3 py-1 rounded-full text-sm font-semibold ${ (b.status || 'Active') === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>{b.status || 'Active'}</span>
+                        <td className="px-6 py-3">
+                          <span className={`px-2 py-1 rounded-full text-sm font-semibold ${ (b.status || 'Active') === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>{b.status || 'Active'}</span>
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-3">
                           <div className="flex items-center space-x-2">
-                            <button onClick={() => openView(b)} className="p-2 text-gray-700 hover:bg-gray-100 rounded-lg transition" title="View">
-                              <EyeIcon className="w-4 h-4" />
+                            <button onClick={() => openView(b)} className="p-1.5 text-gray-700 hover:bg-gray-100 rounded-lg transition" title="View">
+                              <EyeIcon className="w-3 h-3" />
                             </button>
-                            <button onClick={() => openEdit(b)} className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition" title="Edit">
-                              <EditIcon className="w-4 h-4" />
+                            <button onClick={() => openEdit(b)} className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition" title="Edit">
+                              <EditIcon className="w-3 h-3" />
                             </button>
-                            <button onClick={() => openManageMonths(b)} className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition" title="Manage Months">M</button>
-                            <button onClick={() => handleDelete(b._id)} className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition" title="Delete">
-                              <TrashIcon className="w-4 h-4" />
+                            <button onClick={() => openManageMonths(b)} className="p-1.5 text-indigo-600 hover:bg-indigo-50 rounded-lg transition" title="Manage Months">M</button>
+                            <button onClick={() => handleDelete(b._id)} className="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition" title="Delete">
+                              <TrashIcon className="w-3 h-3" />
                             </button>
                           </div>
                         </td>
@@ -211,6 +211,27 @@ export default function AdminClasses() {
                 </tbody>
               </table>
             </div>
+
+            {/* Mobile: compact stacked cards for batches */}
+            <div className="block md:hidden">
+              <div className="divide-y divide-gray-200">
+                {batches.map((b, idx) => (
+                  <div key={b._id || idx} className="p-3 flex items-start justify-between">
+                    <div className="min-w-0">
+                      <div className="text-sm font-medium text-gray-900">{b.year}</div>
+                      <div className="text-[11px] text-gray-600 truncate">{b.title || '-'}</div>
+                      <div className="mt-1"><span className={`px-2 py-0.5 rounded-full text-[11px] font-semibold ${ (b.status || 'Active') === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>{b.status || 'Active'}</span></div>
+                    </div>
+                    <div className="ml-3 flex-shrink-0 flex items-center space-x-1">
+                      <button onClick={() => openView(b)} className="p-1 text-gray-700 rounded hover:bg-gray-100"><EyeIcon className="w-3 h-3" /></button>
+                      <button onClick={() => openEdit(b)} className="p-1 text-blue-600 rounded hover:bg-blue-50"><EditIcon className="w-3 h-3" /></button>
+                      <button onClick={() => openManageMonths(b)} className="p-1 text-indigo-600 rounded hover:bg-indigo-50">M</button>
+                      <button onClick={() => handleDelete(b._id)} className="p-1 text-red-600 rounded hover:bg-red-50"><TrashIcon className="w-3 h-3" /></button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* Create / Edit Modal */}
@@ -218,29 +239,29 @@ export default function AdminClasses() {
             {modalOpen && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" onClick={() => setModalOpen(false)}>
                 <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="bg-white rounded-xl shadow-2xl max-w-2xl w-full" onClick={(e) => e.stopPropagation()}>
-                  <div className="p-6 border-b border-gray-200 flex justify-between items-center">
-                    <h2 className="text-2xl font-bold text-gray-900">{current ? 'Edit Batch' : 'Create Batch'}</h2>
-                    <button onClick={() => setModalOpen(false)} className="text-gray-400 hover:text-gray-600"><XIcon className="w-6 h-6" /></button>
-                  </div>
-                  <form onSubmit={submit} className="p-6 space-y-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Year *</label>
-                      <input required value={form.year || ''} onChange={(e) => setForm({ ...form, year: e.target.value })} placeholder="2026" className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                    <div className="p-4 md:p-6 border-b border-gray-200 flex justify-between items-center">
+                      <h2 className="text-2xl font-bold text-gray-900">{current ? 'Edit Batch' : 'Create Batch'}</h2>
+                      <button onClick={() => setModalOpen(false)} className="text-gray-400 hover:text-gray-600"><XIcon className="w-6 h-6" /></button>
                     </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
-                      <input value={form.title || ''} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="Optional title" className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
-                      <textarea value={form.description || ''} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={4} placeholder="Optional description" className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
-                    </div>
-                    <div className="flex gap-3 pt-4">
-                      <button type="button" onClick={() => setModalOpen(false)} className="flex-1 px-6 py-3 border border-gray-300 rounded-lg font-semibold text-gray-700 hover:bg-gray-50 transition">Cancel</button>
-                      <button type="submit" className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg transition">{current ? 'Save Changes' : 'Create Batch'}</button>
-                    </div>
-                  </form>
-                </motion.div>
+                    <form onSubmit={submit} className="p-4 md:p-6 space-y-4 md:space-y-6">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Year *</label>
+                        <input required value={form.year || ''} onChange={(e) => setForm({ ...form, year: e.target.value })} placeholder="2026" className="w-full p-2 md:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm" />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+                        <input value={form.title || ''} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="Optional title" className="w-full p-2 md:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm" />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                        <textarea value={form.description || ''} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={4} placeholder="Optional description" className="w-full p-2 md:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm" />
+                      </div>
+                      <div className="flex gap-2 pt-3">
+                        <button type="button" onClick={() => setModalOpen(false)} className="flex-1 px-3 py-2 md:px-6 md:py-3 border border-gray-300 rounded-lg font-semibold text-sm md:text-base text-gray-700 hover:bg-gray-50 transition">Cancel</button>
+                        <button type="submit" className="flex-1 px-3 py-2 md:px-6 md:py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold text-sm md:text-base hover:shadow-lg transition">{current ? 'Save Changes' : 'Create Batch'}</button>
+                      </div>
+                    </form>
+                  </motion.div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -250,22 +271,22 @@ export default function AdminClasses() {
             {viewOpen && current && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" onClick={() => setViewOpen(false)}>
                 <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-                  <div className="p-6 border-b border-gray-200 flex justify-between items-center">
-                    <h2 className="text-2xl font-bold text-gray-900">Batch {current.year}</h2>
-                    <button onClick={() => setViewOpen(false)} className="text-gray-400 hover:text-gray-600"><XIcon className="w-6 h-6" /></button>
-                  </div>
-                  <div className="p-6 space-y-4">
-                    <p className="text-sm text-gray-600">Title</p>
-                    <p className="text-gray-900">{current.title || '-'}</p>
-                    <p className="text-sm text-gray-600">Description</p>
-                    <p className="text-gray-900">{current.description || '-'}</p>
-                    <p className="text-sm text-gray-600">Status</p>
-                    <p className="text-gray-900">{current.status || 'Active'}</p>
-                    <div className="flex gap-3 pt-4">
-                      <button onClick={() => { setViewOpen(false); openEdit(current); }} className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold">Edit</button>
-                      <button onClick={() => setViewOpen(false)} className="flex-1 px-6 py-3 border border-gray-300 rounded-lg">Close</button>
-                    </div>
-                  </div>
+                      <div className="p-4 md:p-6 border-b border-gray-200 flex justify-between items-center">
+                        <h2 className="text-2xl font-bold text-gray-900">Batch {current.year}</h2>
+                        <button onClick={() => setViewOpen(false)} className="text-gray-400 hover:text-gray-600"><XIcon className="w-6 h-6" /></button>
+                      </div>
+                      <div className="p-4 md:p-6 space-y-3 md:space-y-4">
+                        <p className="text-sm text-gray-600">Title</p>
+                        <p className="text-gray-900">{current.title || '-'}</p>
+                        <p className="text-sm text-gray-600">Description</p>
+                        <p className="text-gray-900">{current.description || '-'}</p>
+                        <p className="text-sm text-gray-600">Status</p>
+                        <p className="text-gray-900">{current.status || 'Active'}</p>
+                        <div className="flex gap-2 pt-3">
+                          <button onClick={() => { setViewOpen(false); openEdit(current); }} className="flex-1 px-3 py-2 md:px-6 md:py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold text-sm md:text-base">Edit</button>
+                          <button onClick={() => setViewOpen(false)} className="flex-1 px-3 py-2 md:px-6 md:py-3 border border-gray-300 rounded-lg text-sm md:text-base">Close</button>
+                        </div>
+                      </div>
                 </motion.div>
               </motion.div>
             )}
@@ -276,40 +297,40 @@ export default function AdminClasses() {
             {monthModalOpen && monthsOpenFor && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" onClick={() => setMonthModalOpen(false)}>
                 <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-                  <div className="p-6 border-b border-gray-200 flex justify-between items-center">
-                    <h2 className="text-2xl font-bold text-gray-900">Months for {monthsOpenFor.year}</h2>
-                    <button onClick={() => setMonthModalOpen(false)} className="text-gray-400 hover:text-gray-600"><XIcon className="w-6 h-6" /></button>
-                  </div>
-                  <div className="p-6">
-                    <div className="flex justify-between items-center mb-4">
-                      <div className="text-sm text-gray-600">Create, view, edit, delete months for this batch. Months appear as cards below.</div>
-                      <div className="flex items-center space-x-2">
-                        <input value={monthForm.name || ''} onChange={(e) => setMonthForm({ ...monthForm, name: e.target.value })} placeholder="Month name e.g., January" className="p-2 border rounded" />
-                        <input type="number" value={monthForm.price ?? 0} onChange={(e) => setMonthForm({ ...monthForm, price: Number(e.target.value) })} placeholder="Amount LKR (0 = Free)" className="p-2 border rounded ml-2 w-44" />
-                        <button onClick={async () => {
-                          try {
-                            if (!monthForm.name) return toast.error('Enter month name')
-                            if (editingMonth && editingMonth._id) {
-                              await monthSvc.updateMonth(editingMonth._id, { ...monthForm, batchYear: monthsOpenFor.year })
-                              toast.success('Month updated')
-                            } else {
-                              await monthSvc.createMonth({ ...monthForm, batchYear: monthsOpenFor.year })
-                              toast.success('Month created')
-                            }
-                            setMonthForm({ name: '', title: '', description: '' })
-                            setEditingMonth(null)
-                            const res = await monthSvc.getMonths(monthsOpenFor.year)
-                            setMonths(res.months || [])
-                            window.dispatchEvent(new CustomEvent('months-updated'))
-                          } catch (err: any) {
-                            console.error(err)
-                            toast.error('Failed to save month')
-                          }
-                        }} className="px-4 py-2 bg-gradient-to-r from-indigo-600 to-indigo-500 text-white rounded">{editingMonth ? 'Save' : 'Add Month'}</button>
+                  <div className="p-4 md:p-6 border-b border-gray-200 flex justify-between items-center">
+                        <h2 className="text-2xl font-bold text-gray-900">Months for {monthsOpenFor.year}</h2>
+                        <button onClick={() => setMonthModalOpen(false)} className="text-gray-400 hover:text-gray-600"><XIcon className="w-6 h-6" /></button>
                       </div>
-                    </div>
+                      <div className="p-4 md:p-6">
+                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-3">
+                          <div className="text-sm text-gray-600">Create, view, edit, delete months for this batch. Months appear as cards below.</div>
+                          <div className="flex items-center space-x-2 w-full md:w-auto">
+                            <input value={monthForm.name || ''} onChange={(e) => setMonthForm({ ...monthForm, name: e.target.value })} placeholder="Month name e.g., January" className="p-2 md:p-2 border rounded w-full md:w-auto text-sm" />
+                            <input type="number" value={monthForm.price ?? 0} onChange={(e) => setMonthForm({ ...monthForm, price: Number(e.target.value) })} placeholder="Amount LKR (0 = Free)" className="p-2 md:p-2 border rounded ml-0 md:ml-2 w-full md:w-44 text-sm" />
+                            <button onClick={async () => {
+                              try {
+                                if (!monthForm.name) return toast.error('Enter month name')
+                                if (editingMonth && editingMonth._id) {
+                                  await monthSvc.updateMonth(editingMonth._id, { ...monthForm, batchYear: monthsOpenFor.year })
+                                  toast.success('Month updated')
+                                } else {
+                                  await monthSvc.createMonth({ ...monthForm, batchYear: monthsOpenFor.year })
+                                  toast.success('Month created')
+                                }
+                                setMonthForm({ name: '', title: '', description: '' })
+                                setEditingMonth(null)
+                                const res = await monthSvc.getMonths(monthsOpenFor.year)
+                                setMonths(res.months || [])
+                                window.dispatchEvent(new CustomEvent('months-updated'))
+                              } catch (err: any) {
+                                console.error(err)
+                                toast.error('Failed to save month')
+                              }
+                            }} className="px-3 py-2 bg-gradient-to-r from-indigo-600 to-indigo-500 text-white rounded text-sm">{editingMonth ? 'Save' : 'Add Month'}</button>
+                          </div>
+                        </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {months.map((m) => (
                         <div key={m._id} className="bg-gray-50 border border-gray-200 rounded-lg p-4">
                           <div className="flex justify-between items-start">

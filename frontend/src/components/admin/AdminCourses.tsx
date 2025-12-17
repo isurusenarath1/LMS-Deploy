@@ -172,7 +172,7 @@ export default function AdminCourses() {
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Manage Courses</h1>
           <p className="text-gray-600">Create and manage courses for year batches</p>
         </div>
-        <button onClick={openNew} className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition">
+        <button onClick={openNew} className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-2 md:px-6 md:py-3 rounded-lg font-semibold text-sm md:text-base hover:shadow-lg transition">
           <PlusIcon className="w-5 h-5" />
           <span>New Course</span>
         </button>
@@ -181,7 +181,7 @@ export default function AdminCourses() {
       {loading && <div className="mb-4 text-sm text-gray-600">Loading courses...</div>}
 
       {/* Batch Filter */}
-      <div className="bg-white rounded-xl shadow-md p-4 mb-6">
+      <div className="bg-white rounded-xl shadow-md p-3 md:p-4 mb-6">
         <label className="block text-sm font-medium text-gray-700 mb-2">Filter by Batch Year</label>
         <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)} className="w-full max-w-xs px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
           <option value="">All Batches</option>
@@ -195,16 +195,16 @@ export default function AdminCourses() {
 
       {/* Courses Table */}
       <div className="bg-white rounded-xl shadow-md overflow-hidden">
-        <div className="overflow-x-auto">
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Lesson Title</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Batch Year</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Source</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Price</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Status</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Actions</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Lesson Title</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Batch Year</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Source</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Price</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Status</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
@@ -217,35 +217,35 @@ export default function AdminCourses() {
               ) : (
                 filteredCourses.map((course, index) => (
                   <motion.tr key={course._id || index} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.03 }} className="hover:bg-gray-50">
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-3">
                       <div className="font-medium text-gray-900">{course.lessonTitle}</div>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-3">
                       <div className="text-gray-700">{course.year}</div>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-3">
                       <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full font-medium">
                         {course.sourceType === 'youtube' ? 'YouTube' : course.sourceType === 'zoom' ? 'Zoom' : 'Teams'}
                       </span>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-3">
                       <div className="text-gray-900 font-semibold">{course.price}</div>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-3">
                       <span className={`px-3 py-1 rounded-full text-sm font-semibold ${ (course.status || 'Active') === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
                         {course.status || 'Active'}
                       </span>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-3">
                       <div className="flex items-center space-x-2">
-                        <button onClick={() => openView(course)} className="p-2 text-gray-700 hover:bg-gray-100 rounded-lg transition" title="View">
-                          <EyeIcon className="w-4 h-4" />
+                        <button onClick={() => openView(course)} className="p-1.5 text-gray-700 hover:bg-gray-100 rounded-lg transition" title="View">
+                          <EyeIcon className="w-3 h-3" />
                         </button>
-                        <button onClick={() => openEdit(course)} className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition" title="Edit">
-                          <EditIcon className="w-4 h-4" />
+                        <button onClick={() => openEdit(course)} className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition" title="Edit">
+                          <EditIcon className="w-3 h-3" />
                         </button>
-                        <button onClick={() => handleDelete(course._id)} className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition" title="Delete">
-                          <TrashIcon className="w-4 h-4" />
+                        <button onClick={() => handleDelete(course._id)} className="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition" title="Delete">
+                          <TrashIcon className="w-3 h-3" />
                         </button>
                       </div>
                     </td>
@@ -255,6 +255,27 @@ export default function AdminCourses() {
             </tbody>
           </table>
         </div>
+
+        {/* Mobile: stacked compact cards */}
+        <div className="block md:hidden">
+          <div className="divide-y divide-gray-200">
+            {filteredCourses.map((course, idx) => (
+              <div key={course._id || idx} className="p-3 flex items-start justify-between">
+                <div className="min-w-0">
+                  <div className="text-sm font-medium text-gray-900 truncate">{course.lessonTitle}</div>
+                  <div className="text-[11px] text-gray-600 truncate">{course.year} • {course.sourceType === 'youtube' ? 'YouTube' : course.sourceType === 'zoom' ? 'Zoom' : 'Teams'}</div>
+                  <div className="text-[11px] text-gray-900 font-semibold mt-1">{course.price}</div>
+                </div>
+                <div className="ml-3 flex-shrink-0 flex items-center space-x-1">
+                  <span className={`px-2 py-0.5 rounded-full text-[11px] font-semibold ${ (course.status || 'Active') === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>{course.status || 'Active'}</span>
+                  <button onClick={() => openView(course)} className="p-1 text-gray-700 rounded hover:bg-gray-100"><EyeIcon className="w-3 h-3" /></button>
+                  <button onClick={() => openEdit(course)} className="p-1 text-blue-600 rounded hover:bg-blue-50"><EditIcon className="w-3 h-3" /></button>
+                  <button onClick={() => handleDelete(course._id)} className="p-1 text-red-600 rounded hover:bg-red-50"><TrashIcon className="w-3 h-3" /></button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Create / Edit Modal */}
@@ -262,13 +283,13 @@ export default function AdminCourses() {
         {modalOpen && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" onClick={() => setModalOpen(false)}>
             <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="bg-white rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-              <div className="p-6 border-b border-gray-200 flex justify-between items-center">
+              <div className="p-4 md:p-6 border-b border-gray-200 flex justify-between items-center">
                 <h2 className="text-2xl font-bold text-gray-900">{current ? 'Edit Course' : 'Create Course'}</h2>
                 <button onClick={() => setModalOpen(false)} className="text-gray-400 hover:text-gray-600">
                   <XIcon className="w-6 h-6" />
                 </button>
               </div>
-              <form onSubmit={submit} className="p-6 space-y-6">
+              <form onSubmit={submit} className="p-4 md:p-6 space-y-4 md:space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -279,7 +300,7 @@ export default function AdminCourses() {
                       value={form.lessonTitle || ''}
                       onChange={(e) => setForm({ ...form, lessonTitle: e.target.value })}
                       placeholder="e.g., Introduction to React"
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full p-2 md:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                     />
                   </div>
 
@@ -336,7 +357,7 @@ export default function AdminCourses() {
                       value={form.duration || ''}
                       onChange={(e) => setForm({ ...form, duration: e.target.value })}
                       placeholder="e.g., 8 hours"
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full p-2 md:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                     />
                   </div>
 
@@ -348,7 +369,7 @@ export default function AdminCourses() {
                       value={form.price || ''}
                       onChange={(e) => setForm({ ...form, price: e.target.value })}
                       placeholder="e.g., Rs. 5000 or Free"
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full p-2 md:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                     />
                   </div>
 
@@ -360,7 +381,7 @@ export default function AdminCourses() {
                       value={form.thumbnail || ''}
                       onChange={(e) => setForm({ ...form, thumbnail: e.target.value })}
                       placeholder="https://example.com/image.jpg"
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full p-2 md:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                     />
                   </div>
                 </div>
@@ -374,7 +395,7 @@ export default function AdminCourses() {
                     value={form.sourceUrl || ''}
                     onChange={(e) => setForm({ ...form, sourceUrl: e.target.value })}
                     placeholder={form.sourceType === 'youtube' ? 'https://youtube.com/...' : form.sourceType === 'zoom' ? 'https://zoom.us/...' : 'https://teams.microsoft.com/...'}
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full p-2 md:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                   />
                 </div>
 
@@ -387,15 +408,15 @@ export default function AdminCourses() {
                     onChange={(e) => setForm({ ...form, description: e.target.value })}
                     rows={4}
                     placeholder="Course description"
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full p-2 md:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                   />
                 </div>
 
-                <div className="flex gap-3 pt-4">
-                  <button type="button" onClick={() => setModalOpen(false)} className="flex-1 px-6 py-3 border border-gray-300 rounded-lg font-semibold text-gray-700 hover:bg-gray-50 transition">
+                <div className="flex gap-2 pt-3">
+                  <button type="button" onClick={() => setModalOpen(false)} className="flex-1 px-3 py-2 md:px-6 md:py-3 border border-gray-300 rounded-lg font-semibold text-sm md:text-base text-gray-700 hover:bg-gray-50 transition">
                     Cancel
                   </button>
-                  <button type="submit" className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg transition">
+                  <button type="submit" className="flex-1 px-3 py-2 md:px-6 md:py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold text-sm md:text-base hover:shadow-lg transition">
                     {current ? 'Save Changes' : 'Create Course'}
                   </button>
                 </div>

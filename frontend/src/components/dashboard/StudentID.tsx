@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { QRCodeSVG } from 'qrcode.react';
 import { DownloadIcon, CreditCardIcon, MailIcon, CalendarIcon } from 'lucide-react';
@@ -9,6 +9,20 @@ export default function StudentID() {
     user
   } = useAuth();
   const cardRef = useRef<HTMLDivElement>(null);
+  const [qrSize, setQrSize] = useState(200);
+
+  useEffect(() => {
+    function updateSize() {
+      const w = window.innerWidth;
+      if (w < 360) setQrSize(120);
+      else if (w < 420) setQrSize(140);
+      else if (w < 640) setQrSize(160);
+      else setQrSize(200);
+    }
+    updateSize();
+    window.addEventListener('resize', updateSize);
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
   const handleDownload = async () => {
     if (!cardRef.current) return;
     try {
@@ -38,7 +52,7 @@ export default function StudentID() {
   const idValueRaw = user?.nic ?? user?.studentId ?? user?.id ?? '';
   const idValue = idValueRaw ? String(idValueRaw).trim() : '';
 
-  return <div className="max-w-4xl">
+  return <div className="max-w-4xl mx-auto w-full px-4">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Student ID Card</h1>
@@ -46,28 +60,28 @@ export default function StudentID() {
             Your digital student identification
           </p>
         </div>
-        <button onClick={handleDownload} className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition">
+        <button onClick={handleDownload} className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-semibold hover:shadow-lg transition">
           <DownloadIcon className="w-5 h-5" />
           <span>Download ID</span>
         </button>
       </div>
-      <div className="bg-white rounded-xl shadow-lg p-8">
-        <div ref={cardRef} className="bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 rounded-2xl p-8 text-white relative overflow-hidden">
+      <div className="bg-white rounded-xl shadow-lg p-4 sm:p-8">
+        <div ref={cardRef} className="bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 rounded-2xl p-6 sm:p-8 text-white relative overflow-hidden max-w-full box-border">
           {/* Background Pattern */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full -translate-y-32 translate-x-32"></div>
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-white rounded-full translate-y-24 -translate-x-24"></div>
+          <div className="absolute inset-0 opacity-10 pointer-events-none">
+            <div className="absolute top-0 right-0 w-40 h-40 sm:w-64 sm:h-64 bg-white rounded-full -translate-y-20 sm:-translate-y-32 translate-x-20 sm:translate-x-32"></div>
+            <div className="absolute bottom-0 left-0 w-28 h-28 sm:w-48 sm:h-48 bg-white rounded-full translate-y-12 sm:translate-y-24 -translate-x-12 sm:-translate-x-24"></div>
           </div>
           {/* Card Content */}
           <div className="relative z-10">
             {/* Header */}
-            <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-lg flex items-center justify-center">
                   <span className="text-blue-600 font-bold text-2xl">P</span>
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold">PPP Physics</h2>
+                  <h2 className="text-lg sm:text-xl font-bold">PPP Physics</h2>
                   <p className="text-blue-100 text-sm">
                     Student Identification
                   </p>
@@ -76,16 +90,16 @@ export default function StudentID() {
               <CreditCardIcon className="w-8 h-8 text-blue-200" />
             </div>
             {/* Student Info and QR Code */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
               {/* Left Side - Student Information */}
               <div className="space-y-6">
                 {/* Profile Picture */}
                 <div className="flex items-center space-x-4">
-                  <div className="w-24 h-24 bg-white rounded-xl flex items-center justify-center shadow-lg overflow-hidden">
-                    {user?.profilePicture ? <img src={user.profilePicture} alt="avatar" className="w-full h-full object-cover" /> : <span className="text-blue-600 font-bold text-4xl">{user?.name ? user.name.charAt(0) : 'S'}</span>}
+                  <div className="w-16 h-16 sm:w-24 sm:h-24 bg-white rounded-xl flex items-center justify-center shadow-lg overflow-hidden">
+                    {user?.profilePicture ? <img src={user.profilePicture} alt="avatar" className="w-full h-full object-cover" /> : <span className="text-blue-600 font-bold text-3xl sm:text-4xl">{user?.name ? user.name.charAt(0) : 'S'}</span>}
                   </div>
                   <div>
-                    <h3 className="text-2xl font-bold">{user?.name}</h3>
+                    <h3 className="text-xl sm:text-2xl font-bold">{user?.name}</h3>
                     <p className="text-blue-100">Student</p>
                   </div>
                 </div>
@@ -122,10 +136,10 @@ export default function StudentID() {
               </div>
               {/* Right Side - QR Code */}
               <div className="flex flex-col items-center justify-center">
-                <div className="bg-white p-6 rounded-2xl shadow-2xl">
+                <div className="bg-white p-3 sm:p-6 rounded-2xl shadow-2xl transform scale-75 sm:scale-90 md:scale-100">
                   {/* QR encodes the identifier (NIC or studentId). If missing, show a placeholder message instead of an empty QR. */}
                   {idValue ? (
-                    <QRCodeSVG value={idValue} size={200} level="H" includeMargin={true} />
+                    <QRCodeSVG value={idValue} size={qrSize} level="H" includeMargin={true} />
                   ) : (
                     <div className="w-48 h-48 flex items-center justify-center text-gray-400">No ID available</div>
                   )}

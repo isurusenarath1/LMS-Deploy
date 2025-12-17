@@ -221,7 +221,7 @@ export default function AdminStudents() {
             Manage and monitor student information
           </p>
         </div>
-        <button onClick={openAdd} className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition">
+        <button onClick={openAdd} className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-2 md:px-6 md:py-3 rounded-lg font-semibold text-sm md:text-base hover:shadow-lg transition">
           <PlusIcon className="w-5 h-5" />
           <span>Add Student</span>
         </button>
@@ -246,7 +246,7 @@ export default function AdminStudents() {
           scale: 0.9,
           opacity: 0
         }} className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
-              <div className="p-6 border-b border-gray-200 flex justify-between items-center">
+              <div className="p-3 md:p-6 border-b border-gray-200 flex justify-between items-center">
                 <h2 className="text-2xl font-bold text-gray-900">
                   {editingId ? 'Edit Student' : 'Add New Student'}
                 </h2>
@@ -254,7 +254,7 @@ export default function AdminStudents() {
                   <XIcon className="w-6 h-6" />
                 </button>
               </div>
-              <form onSubmit={handleSubmit} className="p-6 space-y-6">
+              <form onSubmit={handleSubmit} className="p-3 md:p-6 space-y-3 md:space-y-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Full Name *
@@ -262,7 +262,7 @@ export default function AdminStudents() {
                     <input ref={firstStudentInputRef} type="text" value={formData.name} onChange={e => setFormData({
                   ...formData,
                   name: e.target.value
-                })} placeholder="Enter student name" className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required />
+                })} placeholder="Enter student name" className="w-full p-1.5 md:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm" required />
                   </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -271,7 +271,7 @@ export default function AdminStudents() {
                   <input type="email" value={formData.email} onChange={e => setFormData({
                 ...formData,
                 email: e.target.value
-              })} placeholder="student@example.com" className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required />
+              })} placeholder="student@example.com" className="w-full p-1.5 md:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm" required />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -280,7 +280,7 @@ export default function AdminStudents() {
                   <input type="tel" value={formData.phone} onChange={e => setFormData({
                 ...formData,
                 phone: e.target.value
-              })} placeholder="+94 71 234 5678" className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required />
+              })} placeholder="+94 71 234 5678" className="w-full p-1.5 md:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm" required />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -289,7 +289,7 @@ export default function AdminStudents() {
                   <input type="password" value={formData.password} onChange={e => setFormData({
                 ...formData,
                 password: e.target.value
-              })} placeholder={editingId ? 'Leave blank to keep current password' : 'Enter password'} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" {...(!editingId ? { required: true } : {})} />
+              })} placeholder={editingId ? 'Leave blank to keep current password' : 'Enter password'} className="w-full p-1.5 md:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm" {...(!editingId ? { required: true } : {})} />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -298,13 +298,13 @@ export default function AdminStudents() {
                   <textarea value={formData.address} onChange={e => setFormData({
                 ...formData,
                 address: e.target.value
-              })} placeholder="Enter student address" rows={3} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+              })} placeholder="Enter student address" rows={3} className="w-full p-1.5 md:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm" />
                 </div>
                 <div className="flex gap-3 pt-4">
-                  <button type="button" onClick={closeModal} className="flex-1 px-6 py-3 border border-gray-300 rounded-lg font-semibold text-gray-700 hover:bg-gray-50 transition">
+                  <button type="button" onClick={closeModal} className="flex-1 px-3 py-2 md:px-6 md:py-3 border border-gray-300 rounded-lg font-semibold text-sm md:text-base text-gray-700 hover:bg-gray-50 transition">
                     Cancel
                   </button>
-                  <button type="submit" disabled={submittingStudent} className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg transition flex items-center justify-center gap-2">
+                  <button type="submit" disabled={submittingStudent} className="flex-1 px-3 py-2 md:px-6 md:py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg transition flex items-center justify-center gap-2 text-sm md:text-base">
                     {submittingStudent ? (<svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"/></svg>) : null}
                     {editingId ? (submittingStudent ? 'Saving...' : 'Save Changes') : (submittingStudent ? 'Adding...' : 'Add Student')}
                   </button>
@@ -333,12 +333,12 @@ export default function AdminStudents() {
         </motion.div>
       </div>
       {/* Search and Filter */}
-      <div className="bg-white p-6 rounded-xl shadow-md mb-6">
+      <div className="bg-white p-4 md:p-6 rounded-xl shadow-md mb-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="md:col-span-2">
             <div className="relative">
-              <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input type="text" placeholder="Search by name, email, or ID..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+              <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <input type="text" placeholder="Search by name, email, or ID..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full pl-10 pr-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm" />
             </div>
           </div>
           <div>
@@ -350,168 +350,139 @@ export default function AdminStudents() {
           </div>
         </div>
       </div>
-      {/* Students Table */}
+      {/* Students Table (desktop/tablet) and stacked cards (mobile) */}
       <div className="bg-white rounded-xl shadow-md overflow-hidden">
-        <div className="overflow-x-auto">
+        {/* Desktop / Tablet: keep existing table but hide on small screens */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                  Student ID
-                </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                  Name
-                </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                  Contact
-                </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                  Months
-                </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                  Avg Score
-                </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                  Status
-                </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                  Actions
-                </th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Student ID</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Name</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Contact</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Months</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Avg Score</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Status</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {filteredStudents.map((student, index) => <motion.tr key={student._id || student.id || index} initial={{
-              opacity: 0,
-              y: 20
-            }} animate={{
-              opacity: 1,
-              y: 0
-            }} transition={{
-              delay: index * 0.05
-            }} className="hover:bg-gray-50">
-                  <td className="px-6 py-4">
-                    <span className="font-mono text-sm text-gray-900">
-                      {student.studentId || (student._id ? String(student._id).slice(-6) : student.id)}
-                    </span>
-                  </td>
+              {filteredStudents.map((student, index) => (
+                <motion.tr key={student._id || student.id || index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.05 }} className="hover:bg-gray-50">
+                  <td className="px-6 py-3"><span className="font-mono text-sm text-gray-900">{student.studentId || (student._id ? String(student._id).slice(-6) : student.id)}</span></td>
                   <td className="px-6 py-4">
                     <div className="flex items-center space-x-3">
                       {(() => {
                         const imgSrc = getImageUrl(student.profilePicture);
                         const id = student._id || student.id || String(index);
                         if (imgSrc && !imageErrorIds[id]) {
-                          return <div className="w-10 h-10 rounded-full overflow-hidden">
-                            <img src={imgSrc} alt={student.name || 'avatar'} className="w-full h-full object-cover object-center" onError={() => markImageError(id)} />
-                          </div>;
+                          return (<div className="w-8 h-8 rounded-full overflow-hidden"><img src={imgSrc} alt={student.name || 'avatar'} className="w-full h-full object-cover object-center" onError={() => markImageError(id)} /></div>);
                         }
-                        return <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold">
-                          {(student.name && student.name.length > 0) ? student.name.charAt(0) : '?'}
-                        </div>;
+                        return (<div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold">{(student.name && student.name.length > 0) ? student.name.charAt(0) : '?'}</div>);
                       })()}
-                      <span className="font-medium text-gray-900">
-                        {student.name}
-                      </span>
+                      <span className="font-medium text-gray-900">{student.name}</span>
                     </div>
                   </td>
                   <td className="px-6 py-4">
                     <div className="space-y-1">
-                      <div className="flex items-center text-sm text-gray-600">
-                        <MailIcon className="w-4 h-4 mr-2" />
-                        {student.email}
-                      </div>
-                      <div className="flex items-center text-sm text-gray-600">
-                        <PhoneIcon className="w-4 h-4 mr-2" />
-                        {student.phone}
-                      </div>
+                      <div className="flex items-center text-xs text-gray-600"><MailIcon className="w-3 h-3 mr-2" />{student.email}</div>
+                      <div className="flex items-center text-xs text-gray-600"><PhoneIcon className="w-3 h-3 mr-2" />{student.phone}</div>
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    {/* quick preview button to load months into modal */}
                     <button onClick={async () => {
                       try {
                         const id = student._id || student.id;
                         const res = await adminService.getStudentMonths(id);
-
-                        // normalize months from several possible shapes:
-                        // - { success: true, months: [...] }
-                        // - { months: [...] }
-                        // - { data: { months: [...] } }
-                        // - direct array [...]
                         let months: any[] = [];
                         if (Array.isArray(res)) months = res;
                         else if (res && Array.isArray(res.months)) months = res.months;
                         else if (res && res.data && Array.isArray(res.data.months)) months = res.data.months;
                         else if (res && Array.isArray(res.data)) months = res.data;
-
-                        if (res && (res.success || months.length >= 0)) {
-                          // always open the modal with normalized months
-                          openView({ ...student, months });
-                        } else {
-                          toast.error(res?.message || 'Failed to load months');
-                        }
-                      } catch (e: any) {
-                        console.error('Error fetching student months', e);
-                        toast.error(e?.message || 'Error loading months');
-                      }
+                        if (res && (res.success || months.length >= 0)) openView({ ...student, months });
+                        else toast.error(res?.message || 'Failed to load months');
+                      } catch (e: any) { console.error('Error fetching student months', e); toast.error(e?.message || 'Error loading months'); }
                     }} className="ml-3 text-sm text-blue-600 hover:underline">Preview</button>
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-3"><div className="flex items-center space-x-2"><span className="text-lg font-semibold text-gray-900">{student.avgScore || 0}%</span><TrendingUpIcon className="w-3 h-3 text-green-600" /></div></td>
+                  <td className="px-6 py-3"><span className={`px-2 py-1 rounded-full text-sm font-semibold ${ (student.status || 'Active') === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>{student.status || 'Active'}</span></td>
+                  <td className="px-6 py-3">
                     <div className="flex items-center space-x-2">
-                      <span className="text-lg font-semibold text-gray-900">
-                        {student.avgScore || 0}%
-                      </span>
-                      <TrendingUpIcon className="w-4 h-4 text-green-600" />
+                      <button onClick={() => openEdit(student)} className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition"><EditIcon className="w-3 h-3" /></button>
+                      <button onClick={() => openView(student)} className="p-1.5 text-gray-700 hover:bg-gray-100 rounded-lg transition" title="View"><EyeIcon className="w-3 h-3" /></button>
+                      {!student.idVerified && <button onClick={() => handleVerifyStudent(student)} className="p-1.5 text-yellow-600 hover:bg-yellow-50 rounded-lg transition" title="Verify"><PlusIcon className="w-3 h-3" /></button>}
+                      <IconButton size="small" onClick={() => handleToggleStatus(student)} title="Toggle Status" className="text-gray-700">{((student.status || 'Active') === 'Active') ? <CheckCircleIcon fontSize="small" className="text-green-600" /> : <BlockIcon fontSize="small" className="text-gray-600" />}</IconButton>
+                      <button onClick={() => handleDelete(student._id || student.id)} className="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition"><TrashIcon className="w-3 h-3" /></button>
                     </div>
                   </td>
-                  <td className="px-6 py-4">
-                    <span className={`px-3 py-1 rounded-full text-sm font-semibold ${ (student.status || 'Active') === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
-                      {student.status || 'Active'}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center space-x-2">
-                      <button onClick={() => openEdit(student)} className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition">
-                        <EditIcon className="w-4 h-4" />
-                      </button>
-                      <button onClick={() => openView(student)} className="p-2 text-gray-700 hover:bg-gray-100 rounded-lg transition" title="View">
-                        <EyeIcon className="w-4 h-4" />
-                      </button>
-                      {!student.idVerified && <button onClick={() => handleVerifyStudent(student)} className="p-2 text-yellow-600 hover:bg-yellow-50 rounded-lg transition" title="Verify">
-                        <PlusIcon className="w-4 h-4" />
-                      </button>}
-                      <IconButton size="small" onClick={() => handleToggleStatus(student)} title="Toggle Status" className="text-gray-700">
-                        {((student.status || 'Active') === 'Active') ? <CheckCircleIcon fontSize="small" className="text-green-600" /> : <BlockIcon fontSize="small" className="text-gray-600" />}
-                      </IconButton>
-                      <button onClick={() => handleDelete(student._id || student.id)} className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition">
-                        <TrashIcon className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </td>
-                </motion.tr>)}
+                </motion.tr>
+              ))}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile: stacked card list for better responsiveness */}
+        <div className="block md:hidden">
+          <div className="divide-y divide-gray-200">
+            {filteredStudents.map((student, index) => (
+              <div key={student._id || student.id || index} className="p-3 flex items-start space-x-2">
+                <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+                  {(() => {
+                    const imgSrc = getImageUrl(student.profilePicture);
+                    const id = student._id || student.id || String(index);
+                    if (imgSrc && !imageErrorIds[id]) {
+                      return <img src={imgSrc} alt={student.name || 'avatar'} className="w-full h-full object-cover object-center" onError={() => markImageError(id)} />;
+                    }
+                    return <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold">{(student.name && student.name.length > 0) ? student.name.charAt(0) : '?'}</div>;
+                  })()}
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-start justify-between">
+                    <div className="min-w-0">
+                      <div className="text-sm font-medium text-gray-900 truncate">{student.name}</div>
+                      <div className="text-[11px] text-gray-500 font-mono truncate">{student.studentId || (student._id ? String(student._id).slice(-6) : '')}</div>
+                      <div className="text-[11px] text-gray-600 truncate">{student.email}</div>
+                      <div className="text-[11px] text-gray-600">{student.phone}</div>
+                    </div>
+                    <div className="flex-shrink-0 ml-2 flex items-center space-x-1">
+                      <button onClick={() => openEdit(student)} className="p-1.5 text-blue-600 hover:bg-blue-50 rounded transition"><EditIcon className="w-4 h-4" /></button>
+                      <button onClick={() => openView(student)} className="p-1.5 text-gray-700 hover:bg-gray-100 rounded transition"><EyeIcon className="w-4 h-4" /></button>
+                      {!student.idVerified && <button onClick={() => handleVerifyStudent(student)} className="p-1.5 text-yellow-600 hover:bg-yellow-50 rounded transition"><PlusIcon className="w-4 h-4" /></button>}
+                      <button onClick={() => handleDelete(student._id || student.id)} className="p-1.5 text-red-600 hover:bg-red-50 rounded transition"><TrashIcon className="w-4 h-4" /></button>
+                    </div>
+                  </div>
+                  <div className="mt-2 flex items-center justify-between">
+                    <div className="text-xs text-gray-600">Avg: <span className="font-semibold text-gray-900">{student.avgScore || 0}%</span></div>
+                    <div>
+                      <span className={`px-2 py-0.5 rounded-full text-[11px] font-semibold ${ (student.status || 'Active') === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>{student.status || 'Active'}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
       {/* View Student Modal */}
       <AnimatePresence>
         {selectedStudent && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" onClick={closeView}>
             <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
-              <div className="p-6 border-b border-gray-200 flex justify-between items-center">
+              <div className="p-4 md:p-6 border-b border-gray-200 flex justify-between items-center">
                 <h2 className="text-2xl font-bold text-gray-900">Student Details</h2>
                 <button onClick={closeView} className="text-gray-400 hover:text-gray-600">
                   <XIcon className="w-6 h-6" />
                 </button>
               </div>
-              <div className="p-6 space-y-4">
-                <div className="flex items-center space-x-4">
-                  <div className="w-20 h-20 bg-gray-100 rounded-full overflow-hidden flex items-center justify-center">
+              <div className="p-4 md:p-6 space-y-4">
+                <div className="flex items-center space-x-3">
+                  <div className="w-16 h-16 md:w-20 md:h-20 bg-gray-100 rounded-full overflow-hidden flex items-center justify-center">
                     {(() => {
                       const imgSrc = getImageUrl(selectedStudent.profilePicture);
                       const sid = selectedStudent._id || selectedStudent.id || 'modal';
                       if (imgSrc && !imageErrorIds[sid]) {
                         return <img src={imgSrc} alt="avatar" className="w-full h-full object-cover object-center" onError={() => markImageError(sid)} />;
                       }
-                      return <span className="text-xl font-semibold text-gray-500">{(selectedStudent.name || '?').charAt(0)}</span>;
+                      return <span className="text-lg md:text-xl font-semibold text-gray-500">{(selectedStudent.name || '?').charAt(0)}</span>;
                     })()}
                   </div>
                   <div>
@@ -551,10 +522,10 @@ export default function AdminStudents() {
                     )) : <div className="text-sm text-gray-600">No enrolled months</div>}
                   </div>
                 </div>
-                <div className="flex gap-3 pt-4">
-                  <button onClick={closeView} className="px-6 py-3 border border-gray-300 rounded-lg font-semibold text-gray-700 hover:bg-gray-50 transition">Close</button>
-                  {selectedStudent && !selectedStudent.idVerified && <button onClick={() => { handleVerifyStudent(selectedStudent); }} className="px-6 py-3 border border-yellow-400 text-yellow-700 rounded-lg font-semibold hover:bg-yellow-50 transition">Verify ID</button>}
-                  <button onClick={() => { closeView(); openEdit(selectedStudent); }} className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg transition">Edit</button>
+                <div className="flex gap-2 pt-3">
+                  <button onClick={closeView} className="px-3 py-2 md:px-6 md:py-3 border border-gray-300 rounded-lg font-semibold text-sm md:text-base text-gray-700 hover:bg-gray-50 transition">Close</button>
+                  {selectedStudent && !selectedStudent.idVerified && <button onClick={() => { handleVerifyStudent(selectedStudent); }} className="px-3 py-2 md:px-6 md:py-3 border border-yellow-400 text-yellow-700 rounded-lg font-semibold text-sm md:text-base hover:bg-yellow-50 transition">Verify ID</button>}
+                  <button onClick={() => { closeView(); openEdit(selectedStudent); }} className="px-3 py-2 md:px-6 md:py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold text-sm md:text-base hover:shadow-lg transition">Edit</button>
                 </div>
               </div>
             </motion.div>

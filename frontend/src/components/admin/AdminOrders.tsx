@@ -99,12 +99,12 @@ export default function AdminOrders() {
         <p className="text-gray-600">Manage and track course enrollments</p>
       </div>
 
-      <div className="bg-white p-6 rounded-xl shadow-md mb-6">
+      <div className="bg-white p-4 md:p-6 rounded-xl shadow-md mb-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="md:col-span-2">
             <div className="relative">
-              <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input type="text" placeholder="Search by order ID, student, or item..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+              <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <input type="text" placeholder="Search by order ID, student, or item..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full pl-10 pr-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm" />
             </div>
           </div>
           <div>
@@ -119,37 +119,37 @@ export default function AdminOrders() {
       </div>
 
       <div className="bg-white rounded-xl shadow-md overflow-hidden">
-        <div className="overflow-x-auto">
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Order ID</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Student</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Items</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Amount</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Payment</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Date</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Status</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Actions</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Order ID</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Student</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Items</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Amount</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Payment</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Date</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Status</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
               {loading && <tr><td colSpan={8} className="px-6 py-4 text-sm text-gray-500">Loading...</td></tr>}
               {!loading && filteredOrders.map((order, index) => <motion.tr key={order._id || index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.03 }} className="hover:bg-gray-50">
-                  <td className="px-6 py-4"><span className="font-mono text-sm text-gray-900">{order._id}</span></td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-3"><span className="font-mono text-sm text-gray-900">{order._id}</span></td>
+                  <td className="px-6 py-3">
                     <div>
                       <p className="font-medium text-gray-900">{order.customer ? order.customer.name : (order.user || '—')}</p>
                       <p className="text-sm text-gray-500">{order.customer ? order.customer.email : ''}</p>
                     </div>
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-3">
                     <div className="text-sm">
                       {order.items && order.items.map((it: any) => <div key={it.monthId} className="whitespace-nowrap">{it.name}</div>)}
                     </div>
                   </td>
-                  <td className="px-6 py-4"><span className="font-semibold text-gray-900">LKR {order.total}</span></td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-3"><span className="font-semibold text-gray-900">LKR {order.total}</span></td>
+                  <td className="px-6 py-3">
                     <div className="text-sm">{order.paymentMethod}</div>
                     {order.payment && order.payment.reference && <div className="text-xs text-gray-500">Ref: {order.payment.reference}</div>}
                     {order.payment && order.payment.slipPath && (() => {
@@ -158,15 +158,15 @@ export default function AdminOrders() {
                       return <a className="text-sm text-blue-600 underline" href={url} target="_blank" rel="noreferrer">View slip</a>;
                     })()}
                   </td>
-                  <td className="px-6 py-4"><span className="text-sm text-gray-900">{new Date(order.createdAt).toLocaleString()}</span></td>
-                  <td className="px-6 py-4">
-                    <span className={`px-3 py-1 rounded-full text-sm font-semibold ${order.status === 'completed' ? 'bg-green-100 text-green-800' : order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}>{order.status}</span>
+                  <td className="px-6 py-3"><span className="text-sm text-gray-900">{new Date(order.createdAt).toLocaleString()}</span></td>
+                  <td className="px-6 py-3">
+                    <span className={`px-2 py-1 rounded-full text-sm font-semibold ${order.status === 'completed' ? 'bg-green-100 text-green-800' : order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}>{order.status}</span>
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-3">
                     <div className="flex items-center gap-2">
-                      <button onClick={() => handleView(order._id)} title="View" className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition"><EyeIcon className="w-4 h-4" /></button>
-                      {order.status !== 'completed' && <button onClick={() => handleChangeStatus(order._id, 'completed')} title="Mark completed" className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition"><CheckCircleIcon className="w-4 h-4" /></button>}
-                      {order.status !== 'cancelled' && <button onClick={() => handleChangeStatus(order._id, 'cancelled')} title="Cancel" className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition"><XCircleIcon className="w-4 h-4" /></button>}
+                      <button onClick={() => handleView(order._id)} title="View" className="p-1.5 text-blue-600 hover:bg-blue-50 rounded transition"><EyeIcon className="w-3 h-3" /></button>
+                      {order.status !== 'completed' && <button onClick={() => handleChangeStatus(order._id, 'completed')} title="Mark completed" className="p-1.5 text-green-600 hover:bg-green-50 rounded transition"><CheckCircleIcon className="w-3 h-3" /></button>}
+                      {order.status !== 'cancelled' && <button onClick={() => handleChangeStatus(order._id, 'cancelled')} title="Cancel" className="p-1.5 text-red-600 hover:bg-red-50 rounded transition"><XCircleIcon className="w-3 h-3" /></button>}
                       <IconButton onClick={() => handleDelete(order._id)} title="Delete" size="small" aria-label="delete">
                         <DeleteIcon fontSize="small" className="text-red-600" />
                       </IconButton>
@@ -176,13 +176,40 @@ export default function AdminOrders() {
             </tbody>
           </table>
         </div>
+
+        {/* Mobile: compact stacked cards for orders */}
+        <div className="block md:hidden">
+          <div className="divide-y divide-gray-200">
+            {filteredOrders.map((order, idx) => (
+              <div key={order._id || idx} className="p-3">
+                <div className="flex items-start justify-between">
+                  <div className="min-w-0">
+                    <div className="text-sm font-medium text-gray-900">Order {order._id}</div>
+                    <div className="text-[11px] text-gray-600">{order.customer ? order.customer.name : order.user}</div>
+                    <div className="text-[11px] text-gray-600 truncate mt-1">{order.items && order.items.map((it: any) => it.name).join(', ')}</div>
+                    <div className="text-[11px] text-gray-900 font-semibold mt-1">LKR {order.total}</div>
+                  </div>
+                  <div className="ml-3 flex-shrink-0 flex flex-col items-end space-y-1">
+                    <span className={`px-2 py-0.5 rounded-full text-[11px] font-semibold ${order.status === 'completed' ? 'bg-green-100 text-green-800' : order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}>{order.status}</span>
+                    <div className="flex items-center space-x-1">
+                      <button onClick={() => handleView(order._id)} className="p-1 text-blue-600 rounded hover:bg-blue-50"><EyeIcon className="w-3 h-3" /></button>
+                      {order.status !== 'completed' && <button onClick={() => handleChangeStatus(order._id, 'completed')} className="p-1 text-green-600 rounded hover:bg-green-50"><CheckCircleIcon className="w-3 h-3" /></button>}
+                      {order.status !== 'cancelled' && <button onClick={() => handleChangeStatus(order._id, 'cancelled')} className="p-1 text-red-600 rounded hover:bg-red-50"><XCircleIcon className="w-3 h-3" /></button>}
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-2 text-xs text-gray-500">{new Date(order.createdAt).toLocaleString()}</div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
       {/* View modal */}
       {selectedOrder && (
         <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
-          <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full p-6">
+          <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full p-4 md:p-6">
             <div className="flex justify-between items-start">
-              <h3 className="text-xl font-semibold">Order {selectedOrder._id}</h3>
+              <h3 className="text-lg md:text-xl font-semibold">Order {selectedOrder._id}</h3>
               <div className="space-x-2">
                 <button onClick={handleCloseModal} className="text-sm text-gray-500">Close</button>
               </div>
@@ -205,8 +232,8 @@ export default function AdminOrders() {
               <div className="text-sm text-gray-600 mb-2">Items</div>
               <div className="space-y-2">
                 {selectedOrder.items && selectedOrder.items.map((it: any) => (
-                  <div key={it.monthId} className="flex items-center justify-between border rounded p-2">
-                    <div>{it.name}</div>
+                  <div key={it.monthId} className="flex items-center justify-between border rounded p-1.5 md:p-2 text-sm">
+                    <div className="truncate">{it.name}</div>
                     <div className="font-semibold">{it.price ? `LKR ${it.price}` : 'Free'}</div>
                   </div>
                 ))}

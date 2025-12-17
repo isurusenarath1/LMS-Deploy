@@ -23,11 +23,10 @@ export default function AdminDashboard() {
       <Navbar />
       <div className="flex">
         <AdminSidebar />
-        {/* Mobile menu button - visible on small screens */}
-        <div className="md:hidden p-4">
-          <button onClick={() => setMobileSidebarOpen(true)} className="flex items-center gap-2 px-3 py-2 bg-white rounded shadow">
+        {/* Mobile menu button - fixed on small screens */}
+        <div className="md:hidden fixed top-16 left-4 z-50">
+          <button aria-label="Open menu" onClick={() => setMobileSidebarOpen(true)} className="flex items-center gap-2 px-3 py-2 bg-white rounded-full shadow">
             <MenuIcon className="w-5 h-5" />
-            <span className="font-medium">Menu</span>
           </button>
         </div>
         <main className="flex-1 p-4 sm:p-6 md:p-8">

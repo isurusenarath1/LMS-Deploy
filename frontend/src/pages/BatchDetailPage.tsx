@@ -38,12 +38,6 @@ type VideoPlayerProps = {
 function VideoPlayer({ sourceType, sourceUrl, title }: VideoPlayerProps) {
   const [playing, setPlaying] = useState(false)
   const videoRef = useRef<HTMLVideoElement | null>(null)
-  const ytPlayerRef = useRef<any>(null)
-  const playerContainerIdRef = useRef<string>(`yt-player-${Math.random().toString(36).slice(2)}`)
-  const lastTimeRef = useRef<number>(0)
-  const qualityLevelsRef = useRef<string[]>([])
-  const seekingProgrammaticRef = useRef<boolean>(false)
-  const playingStateRef = useRef<boolean>(false)
   const containerRef = useRef<HTMLDivElement | null>(null)
 
   const extractYouTubeId = (url: string | undefined) => {
@@ -60,108 +54,13 @@ function VideoPlayer({ sourceType, sourceUrl, title }: VideoPlayerProps) {
     return null
   }
 
-  useEffect(() => {
-    // init youtube player if needed
-    if (sourceType !== 'youtube') return
+  // compute embed src (privacy-enhanced YouTube domain) if possible
+  const embedSrc = (() => {
     const id = extractYouTubeId(sourceUrl)
-    if (!id) return
+    return id ? `https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1` : (sourceUrl || '')
+  })()
 
-    let pollInterval: any = null
-
-    const onPlayerStateChange = (e: any) => {
-      // YT states: -1 unstarted, 0 ended, 1 playing, 2 paused, 3 buffering
-      const state = e.data
-      try {
-        if (state === 1) { // playing
-          // nothing special here
-        } else if (state === 2) { // paused
-          // paused
-        } else if (state === 0) { // ended
-          // prevent related videos UI by resetting to 0 and pausing
-          seekingProgrammaticRef.current = true
-          try { e.target.seekTo(0, true) } catch (err) {}
-          try { e.target.pauseVideo && e.target.pauseVideo() } catch (err) {}
-          seekingProgrammaticRef.current = false
-        }
-      } catch (err) {}
-    }
-
-    const createPlayer = () => {
-      try {
-        ytPlayerRef.current = new (window as any).YT.Player(playerContainerIdRef.current, {
-          videoId: id,
-          playerVars: {
-            controls: 0, // hide default controls
-            disablekb: 1, // disable keyboard to prevent seeking
-            rel: 0, // related videos from same channel only
-            modestbranding: 1,
-            iv_load_policy: 3,
-            fs: 1,
-            playsinline: 1,
-          },
-          events: {
-            onReady: (e: any) => {
-              try {
-                const levels = e.target.getAvailableQualityLevels ? e.target.getAvailableQualityLevels() : []
-                qualityLevelsRef.current = levels || []
-              } catch (err) {}
-            },
-            onStateChange: onPlayerStateChange,
-          }
-        })
-      } catch (e) {
-        console.error('YT player init failed', e)
-      }
-    }
-
-    if ((window as any).YT && (window as any).YT.Player) {
-      createPlayer()
-    } else {
-      // load API
-      const existing = document.getElementById('youtube-iframe-api')
-      if (!existing) {
-        const s = document.createElement('script')
-        s.src = 'https://www.youtube.com/iframe_api'
-        s.id = 'youtube-iframe-api'
-        document.body.appendChild(s)
-      }
-      ;(window as any).onYouTubeIframeAPIReady = () => {
-        createPlayer()
-      }
-    }
-
-    const startPoll = () => {
-      pollInterval = setInterval(() => {
-        try {
-          if (ytPlayerRef.current && ytPlayerRef.current.getCurrentTime) {
-            const t = ytPlayerRef.current.getCurrentTime()
-            if (t > lastTimeRef.current + 0.6 && !seekingProgrammaticRef.current) {
-              // reset to previous
-              seekingProgrammaticRef.current = true
-              try { ytPlayerRef.current.seekTo(lastTimeRef.current, true) } catch (err) {}
-              seekingProgrammaticRef.current = false
-            } else {
-              lastTimeRef.current = t
-            }
-          }
-        } catch (e) {}
-      }, 500)
-    }
-
-    // start polling shortly after player setup
-    setTimeout(startPoll, 800)
-
-    return () => {
-      try {
-        if (ytPlayerRef.current && ytPlayerRef.current.destroy) ytPlayerRef.current.destroy()
-        ytPlayerRef.current = null
-      } catch (e) {
-        // ignore
-      }
-      if (pollInterval) clearInterval(pollInterval)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sourceType, sourceUrl])
+  // Use the YouTube iframe embed for youtube content (responsive iframe)
 
   useEffect(() => {
     // for HTML5 videos prevent seeking by resetting to lastTime
@@ -183,41 +82,12 @@ function VideoPlayer({ sourceType, sourceUrl, title }: VideoPlayerProps) {
   }, [sourceType])
 
   const handlePlay = async () => {
-    if (sourceType === 'youtube') {
-      try {
-        if (ytPlayerRef.current && ytPlayerRef.current.playVideo) {
-          ytPlayerRef.current.playVideo()
-          setPlaying(true)
-        }
-      } catch (e) {
-        console.error(e)
-      }
-    } else {
-      if (videoRef.current) {
-        await videoRef.current.play()
-        setPlaying(true)
-      }
-    }
+    if (videoRef.current) { try { await videoRef.current.play(); setPlaying(true) } catch (e) {} }
   }
 
   const handleStop = () => {
-    if (sourceType === 'youtube') {
-      try {
-        if (ytPlayerRef.current && ytPlayerRef.current.pauseVideo) {
-          ytPlayerRef.current.pauseVideo()
-          ytPlayerRef.current.seekTo && ytPlayerRef.current.seekTo(0)
-        }
-      } catch (e) {
-        console.error(e)
-      }
-      setPlaying(false)
-    } else {
-      if (videoRef.current) {
-        videoRef.current.pause()
-        videoRef.current.currentTime = 0
-      }
-      setPlaying(false)
-    }
+    if (videoRef.current) { try { videoRef.current.pause(); videoRef.current.currentTime = 0 } catch (e) {} }
+    setPlaying(false)
   }
 
 
@@ -226,7 +96,7 @@ function VideoPlayer({ sourceType, sourceUrl, title }: VideoPlayerProps) {
       <div ref={containerRef} className={`relative aspect-video bg-gray-900 flex items-center justify-center`}>
         {
           sourceType === 'youtube' ? (
-            <div id={playerContainerIdRef.current} className="w-full h-full" />
+            <iframe title={title || 'YouTube video'} src={embedSrc} className="w-full h-full" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
           ) : (sourceUrl && (sourceUrl.endsWith('.mp4') || sourceUrl.includes('.mp4'))) ? (
             <video ref={videoRef} src={sourceUrl} className="w-full h-full object-cover" playsInline />
           ) : (
@@ -244,33 +114,7 @@ function VideoPlayer({ sourceType, sourceUrl, title }: VideoPlayerProps) {
           )
         }
 
-        {/* Controls overlay - Play, Stop, Fullscreen, Quality (no seek) */}
-        <div className="absolute right-3 bottom-3 flex items-center space-x-2 bg-white/5 p-2 rounded-md">
-          <button onClick={handlePlay} className="bg-white/90 text-gray-900 p-2 rounded-md shadow hover:scale-105 transition">
-            <PlayIcon className="w-4 h-4" />
-          </button>
-          <button onClick={handleStop} className="bg-red-600 text-white p-2 rounded-md shadow hover:scale-105 transition">Stop</button>
-          <button onClick={() => {
-            try {
-              const el = containerRef.current as any
-              if (!el) return
-              if (el.requestFullscreen) el.requestFullscreen()
-              else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen()
-              else if (el.msRequestFullscreen) el.msRequestFullscreen()
-            } catch (err) {}
-          }} className="bg-white/90 text-gray-900 p-2 rounded-md shadow hover:scale-105 transition">Full</button>
-
-          <select onChange={(e) => {
-            try {
-              const q = (e.target as HTMLSelectElement).value
-              if (ytPlayerRef.current && ytPlayerRef.current.setPlaybackQuality) ytPlayerRef.current.setPlaybackQuality(q)
-            } catch (err) {}
-          }} className="bg-white/90 text-gray-900 p-2 rounded-md shadow">
-            {(qualityLevelsRef.current && qualityLevelsRef.current.length > 0 ? qualityLevelsRef.current : ['auto']).map((q: any) => (
-              <option key={q} value={q}>{q}</option>
-            ))}
-          </select>
-        </div>
+        {/* Using native iframe/player controls for YouTube — custom control buttons removed for better mobile responsiveness and to follow embed policies. */}
       </div>
     </motion.div>
   )
