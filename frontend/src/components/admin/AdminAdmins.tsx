@@ -74,26 +74,48 @@ export default function AdminAdmins() {
         </button>
       </div>
       {loading && <div className="text-sm text-gray-600 mb-3">Loading...</div>}
-      <div className="bg-white rounded shadow overflow-x-auto">
-        <table className="w-full">
-          <thead className="bg-gray-50 border-b"><tr>
-            <th className="px-4 py-3 text-left">Name</th>
-            <th className="px-4 py-3 text-left">Email</th>
-            <th className="px-4 py-3 text-left">Phone</th>
-            <th className="px-4 py-3 text-left">Actions</th>
-          </tr></thead>
-          <tbody>
-            {admins.map(a => (<tr key={a._id} className="hover:bg-gray-50">
-              <td className="px-4 py-3">{a.name}</td>
-              <td className="px-4 py-3">{a.email}</td>
-              <td className="px-4 py-3">{a.phone || '—'}</td>
-              <td className="px-4 py-3">
-                <button onClick={() => { setEditingId(a._id); setForm({ name: a.name, email: a.email, phone: a.phone || '', password: '' }); setShowAdd(true); }} className="mr-2 text-blue-600"><EditIcon className="w-4 h-4" /></button>
-                <button onClick={() => handleDelete(a._id)} className="text-red-600"><TrashIcon className="w-4 h-4" /></button>
-              </td>
-            </tr>))}
-          </tbody>
-        </table>
+      <div className="bg-white rounded shadow overflow-hidden">
+        {/* Desktop table */}
+        <div className="hidden md:block overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-50 border-b"><tr>
+              <th className="px-4 py-3 text-left">Name</th>
+              <th className="px-4 py-3 text-left">Email</th>
+              <th className="px-4 py-3 text-left">Phone</th>
+              <th className="px-4 py-3 text-left">Actions</th>
+            </tr></thead>
+            <tbody>
+              {admins.map(a => (<tr key={a._id} className="hover:bg-gray-50">
+                <td className="px-4 py-3">{a.name}</td>
+                <td className="px-4 py-3">{a.email}</td>
+                <td className="px-4 py-3">{a.phone || '—'}</td>
+                <td className="px-4 py-3">
+                  <button onClick={() => { setEditingId(a._id); setForm({ name: a.name, email: a.email, phone: a.phone || '', password: '' }); setShowAdd(true); }} className="mr-2 text-blue-600"><EditIcon className="w-4 h-4" /></button>
+                  <button onClick={() => handleDelete(a._id)} className="text-red-600"><TrashIcon className="w-4 h-4" /></button>
+                </td>
+              </tr>))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Mobile: stacked cards */}
+        <div className="block md:hidden divide-y">
+          {admins.map(a => (
+            <div key={a._id} className="p-3 flex items-start justify-between">
+              <div className="min-w-0">
+                <div className="flex items-center gap-2">
+                  <div className="font-medium truncate">{a.name}</div>
+                  <div className="text-xs text-gray-500 truncate">{a.email}</div>
+                </div>
+                <div className="text-xs text-gray-500 mt-1">{a.phone || '—'}</div>
+              </div>
+              <div className="ml-3 flex-shrink-0 flex items-center gap-2">
+                <button onClick={() => { setEditingId(a._id); setForm({ name: a.name, email: a.email, phone: a.phone || '', password: '' }); setShowAdd(true); }} className="p-1.5 text-blue-600 rounded hover:bg-blue-50"><EditIcon className="w-4 h-4" /></button>
+                <button onClick={() => handleDelete(a._id)} className="p-1.5 text-red-600 rounded hover:bg-red-50"><TrashIcon className="w-4 h-4" /></button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {showAdd && (

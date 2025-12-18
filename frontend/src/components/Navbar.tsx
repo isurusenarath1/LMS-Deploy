@@ -463,6 +463,7 @@ export default function Navbar() {
               <Link to="/telegram" className="block py-2 text-gray-700 hover:text-blue-600">
                 Telegram Channels
               </Link>
+              {user?.role === 'admin' && <Link to="/admin" className="block py-2 text-gray-700 hover:text-blue-600" onClick={() => setShowMobileMenu(false)}>Admin Panel</Link>}
               <Link to="/privacy-policy" className="block py-2 text-gray-700 hover:text-blue-600">
                 Privacy Policy
               </Link>

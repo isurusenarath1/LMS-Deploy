@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { UsersIcon, BookOpenIcon, ShoppingCartIcon, CreditCardIcon, BellIcon, QrCodeIcon, SettingsIcon, LogOutIcon, X as XIcon } from 'lucide-react';
+import { UsersIcon, BookOpenIcon, ShoppingCartIcon, CreditCardIcon, BellIcon, QrCodeIcon, SettingsIcon, LogOutIcon, MailIcon, SendIcon, X as XIcon } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { motion } from 'framer-motion';
 
@@ -14,6 +14,10 @@ const links = [{
   icon: UsersIcon,
   label: 'Manage Students'
 }, {
+  to: '/admin/admins',
+  icon: UsersIcon,
+  label: 'Manage Admins'
+}, {
   to: '/admin/classes',
   icon: BookOpenIcon,
   label: 'Manage Classes & Courses'
@@ -26,6 +30,10 @@ const links = [{
   icon: CreditCardIcon,
   label: 'Payments'
 }, {
+  to: '/admin/contacts',
+  icon: MailIcon,
+  label: 'Contact US Messages'
+}, {
   to: '/admin/notifications',
   icon: BellIcon,
   label: 'Send Notifications'
@@ -37,6 +45,10 @@ const links = [{
   to: '/admin/materials',
   icon: BookOpenIcon,
   label: 'Manage Materials'
+}, {
+  to: '/admin/telegram',
+  icon: SendIcon,
+  label: 'Manage Telegram Channels'
 }, {
   to: '/admin/settings',
   icon: SettingsIcon,

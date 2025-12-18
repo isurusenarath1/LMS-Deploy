@@ -81,7 +81,7 @@ export default function AdminMaterials() {
       </div>
 
       {showUpload && (
-        <div className="mb-6 bg-white p-4 rounded-lg shadow">
+        <div className="mb-6 bg-white p-3 md:p-4 rounded-lg shadow">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
             <input value={title} onChange={e=>setTitle(e.target.value)} placeholder="Title" className="p-2 border rounded" />
             <select value={selectedBatch} onChange={e=>setSelectedBatch(e.target.value)} className="p-2 border rounded">
@@ -118,28 +118,28 @@ export default function AdminMaterials() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-6 rounded-xl shadow-md">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-4 md:p-6 rounded-xl shadow-md">
           <div className="flex items-center justify-between mb-2">
             <p className="text-gray-600 text-sm">Total Files</p>
             <FileTextIcon className="w-5 h-5 text-blue-600" />
           </div>
           <p className="text-3xl font-bold text-gray-900">{materials.length}</p>
         </motion.div>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white p-6 rounded-xl shadow-md">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white p-4 md:p-6 rounded-xl shadow-md">
           <div className="flex items-center justify-between mb-2">
             <p className="text-gray-600 text-sm">Total Downloads</p>
             <DownloadIcon className="w-5 h-5 text-green-600" />
           </div>
           <p className="text-3xl font-bold text-green-600">{materials.reduce((s,m)=>s+(m.downloads||0),0)}</p>
         </motion.div>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-white p-6 rounded-xl shadow-md">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-white p-4 md:p-6 rounded-xl shadow-md">
           <div className="flex items-center justify-between mb-2">
             <p className="text-gray-600 text-sm">Storage Used</p>
             <FolderIcon className="w-5 h-5 text-purple-600" />
           </div>
           <p className="text-3xl font-bold text-purple-600">{(materials.reduce((s,m)=>(s+(m.fileSize||0)),0)/1024/1024).toFixed(2)} MB</p>
         </motion.div>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-white p-6 rounded-xl shadow-md">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-white p-4 md:p-6 rounded-xl shadow-md">
           <div className="flex items-center justify-between mb-2">
             <p className="text-gray-600 text-sm">This Month</p>
             <PlusIcon className="w-5 h-5 text-yellow-600" />
@@ -150,7 +150,7 @@ export default function AdminMaterials() {
 
       {/* Materials Table */}
       <div className="bg-white rounded-xl shadow-md overflow-hidden">
-        <div className="overflow-x-auto">
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
@@ -259,6 +259,70 @@ export default function AdminMaterials() {
               ))}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile: compact stacked list */}
+        <div className="block md:hidden">
+          <div className="divide-y divide-gray-200">
+            {materials.map((material, index) => (
+              <div key={material._id || index} className="p-3">
+                <div className="flex items-start justify-between">
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <FileTextIcon className="w-4 h-4 text-blue-600" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-sm font-medium text-gray-900 truncate">{material.title}</div>
+                        <div className="text-xs text-gray-500 truncate">{material.class || ''} • {(material.fileType||'').split('/').pop() || ''}</div>
+                      </div>
+                    </div>
+                    <div className="mt-2 text-[11px] text-gray-600">{material.fileSize ? `${(material.fileSize/1024).toFixed(1)} KB` : ''} • {material.createdAt ? new Date(material.createdAt).toLocaleDateString() : ''}</div>
+                  </div>
+                  <div className="ml-3 flex-shrink-0 flex flex-col items-end space-y-2">
+                    <div className="text-xs text-gray-500">{material.downloads || 0}↓</div>
+                    <div className="flex items-center gap-2">
+                      {material.fileUrl ? <a href={material.fileUrl} target="_blank" rel="noreferrer" className="p-1 text-green-600 rounded hover:bg-green-50"><DownloadIcon className="w-4 h-4" /></a> : null}
+                      {editingId === material._id ? (
+                        <>
+                          <button onClick={async ()=>{
+                            try {
+                              const payload: any = { title: editTitle, class: editClass, description: editDescription };
+                              if (editBatch) payload.batchYear = editBatch; else payload.batchYear = null;
+                              if (editMonth) payload.month = editMonth; else payload.month = null;
+                              const res: any = await materialService.updateMaterial(material._id, payload);
+                              if (res && res.success) { toast.success('Updated'); setEditingId(null); loadMaterials(); }
+                              else toast.error(res?.message || 'Update failed');
+                            } catch (err) { console.error(err); toast.error('Update failed'); }
+                          }} className="px-2 py-1 text-sm text-blue-600 rounded bg-blue-50">Save</button>
+                          <button onClick={()=>{ setEditingId(null); }} className="px-2 py-1 text-sm text-gray-600 rounded bg-gray-50">Cancel</button>
+                        </>
+                      ) : (
+                        <>
+                          <button onClick={()=>{
+                            setEditingId(material._id);
+                            setEditTitle(material.title || '');
+                            setEditClass(material.class || '');
+                            setEditBatch(material.batchYear || '');
+                            setEditMonth(material.month? (material.month._id || material.month) : '');
+                            setEditDescription(material.description || '');
+                          }} className="px-2 py-1 text-sm text-indigo-600 rounded bg-indigo-50">Edit</button>
+                          <button onClick={async ()=>{
+                            if (!confirm('Delete this material?')) return;
+                            try {
+                              const res: any = await materialService.deleteMaterial(material._id);
+                              if (res && res.success) { toast.success('Deleted'); loadMaterials(); }
+                              else toast.error(res?.message || 'Delete failed');
+                            } catch (err) { console.error(err); toast.error('Delete failed'); }
+                          }} className="p-1 text-red-600 rounded bg-red-50"><TrashIcon className="w-4 h-4" /></button>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </>
